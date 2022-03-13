@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body class="darkMode">
+    <nav>
+        <ul>
+            <li>Text-to-Speech</li>
+            <li><a href="#form">Upload File</a></li>
+        </ul>
+    </nav>
+    <section class="first">
+        <div class="wrapName">
+            <h3>What do you wanna call your Voice artist? By default it's GO</h3>
+            <input type="text" value="go" class="nameOfVoice">
+            <button class="submitName">CLICK</button>
+        </div>
+        <button class="talk">TALK</button>
+        <div class="commandSection textarea">
+            <label for="command" aria-placeholder="voice commands goes here..">Command History</label> <textarea
+                id="command" class="command"></textarea>
+        </div>
+        <div class="txt textarea">
+            <label for="txt"> TEXT-TO-SPEECH</label>
+            <textarea id="txt" placeholder="spoken words goes here..." class="content"></textarea>
+        </div>
+    </section>
+
+    <form id="form" action="/extract-text" method="post">
+        <textarea class="pdfText"></textarea>
+        <input type="file" class="inpFile">
+        <button class="btnUpload">Upload</button>
+        <button class="sayPdf">Listen</button>
+    </form>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            z-index: 1;
+
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            height: 200vh;
+            font-family: sans-serif;
+            transform-style: preserve-3d;
+            overflow-x: hidden;
+
+            transition: all 0.3s linear;
+        }
+
+        nav {
+            position: fixed;
+
+            width: 100vw;
+            background-color: darkcyan;
+        }
+
+        nav ul {
+            display: flex;
+            /* height: 5vh; */
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        ul li {
+            list-style-type: none;
+            padding: 15px 0;
+            margin: 0 5vw;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: burlywood;
+        }
+
+        .textarea {
+            flex-direction: column;
+            display: flex;
+            align-items: center;
+        }
+
+        section {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            overflow-x: hidden;
+            /* border: 1px solid black; */
+        }
+
+        section::before {
+            content: 'R';
+            font-size: 40vw;
+            position: absolute;
+            color: rgb(255, 255, 255);
+            text-align: center;
+            /* transform: rotate(90deg); */
+            max-height: 100vh;
+            min-width: 100vw;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            top: 10vh;
+            right: 0;
+            transform-style: preserve-3d;
+            perspective: 800px;
+            text-shadow: 4px 4px 12px #29ff33, 8px 8px 24px rgb(41, 255, 51);
+            z-index: -1;
+            animation: rotation 4s linear forwards;
+            /* animation:  2s ease infinite; */
+            /* animation-delay: 5s; */
+
+        }
+
+        @keyframes rotation {
+            0% {
+                /* transform: scale(0); */
+            }
+
+            50% {
+                transform: rotatey(360deg);
+                font-size: 30vw;
+                top: 20vh;
+                left: -20vw;
+                text-shadow: 4px 4px 32px #29ff33, 8px 8px 44px rgb(41, 255, 51);
+
+            }
+
+            100% {
+                font-size: 15vw;
+                top: 30vh;
+                left: -50vw;
+                /* transform: translateX(-30vw) translateY(-20vh); */
+                text-shadow: 4px 4px 22px #29ff33, 8px 8px 34px rgb(41, 255, 51);
+
+
+            }
+
+        }
+
+
+
+
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: darkcyan;
+            position: relative;
+        }
+
+
+
+
+        .darkMode {
+            background-color: rgb(43, 42, 42);
+            color: rgb(161, 161, 161);
+            border-color: white;
+            text-shadow: 1px 1px white;
+        }
+
+        .lightMode {
+            background-color: rgb(211, 203, 203);
+            color: rgb(85, 71, 71);
+        }
+
+        .wrapName {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            border: 1px solid black;
+            box-shadow: 4px 4px 12px rgb(41, 255, 51), 8px 8px 24px rgb(41, 255, 51);
+
+            padding: 20px;
+            align-items: center;
+        }
+
+
+
+        button {
+            width: 80px;
+            padding: 4px 0;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        input {
+            margin: 2vh 0;
+            transition: all 0.3s linear;
+        }
+
+        .vanish {
+            display: none;
+        }
+
+        .command {
+            font-family: monospace;
+            position: relative;
+        }
+
+        label {
+            margin: 5px 0;
+        }
+
+        .content {
+            width: 70vw;
+            height: 20vh;
+        }
+
+        .pdfText {
+            width: 70vw;
+            height: 50vh;
+        }
+    </style>
+
+
+    <script>
+        let btn = document.querySelector(".talk");
+        let command = document.querySelector(".command");
+        let content = document.querySelector(".content");
+        let nameBtn = document.querySelector(".submitName");
+        let input = document.querySelector(".nameOfVoice");
+        let namePart = document.querySelector(".wrapName");
+
+        let btnUpload = document.querySelector(".btnUpload");
+        let inpFile = document.querySelector(".inpFile");
+        let pdfText = document.querySelector(".pdfText");
+        let sayPdf = document.querySelector(".sayPdf");
+
+
+        btnUpload.addEventListener('click', (e) => {
+            e.preventDefault()
+            //built-in object to send files with key value pairs to the server
+            const formData = new FormData()
+            formData.append('pdfFile', inpFile.files[0])
+            fetch('/extract-text', {
+                method: 'post',
+                body: formData
+            }).then(res => {
+                return res.text()
+            }).then(data => {
+                pdfText.value = data
+            })
+        })
+        sayPdf.addEventListener('click', () => {
+            speakUp(pdfText.value)
+        })
+
+
+
+
+        nameBtn.addEventListener("click", actions);
+        // input.addEventListener("input", (e) => console.log(e.target.value));
+
+        let SpeechRecognition =
+            window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+
+        recognition.onstart = () => console.log("talk");
+
+        // recognition.continuous = false;
+        let greet = ['night', 'light', 'clear data']
+
+        function actions() {
+            namePart.classList.toggle("vanish");
+            console.log(input.value);
+            recognition.onresult = (event) => {
+                let text = event.results[0][0].transcript;
+
+                //* For keeping history of commands
+                for (let i = 0; i < greet.length; i++) {
+                    if (text.toLowerCase().includes(`${input.value} ${greet[i]}`)) {
+                        command.value += `${input.value} ${greet[i]}\n`
+                    }
+                }
+
+
+                if (text.toLowerCase().includes(`${input.value} light`)) {
+                    speakUp("lightMode implement");
+                    setTimeout(() => (document.body.className = "lightMode"), 300);
+                } else if (text.toLowerCase().includes(`${input.value} night`)) {
+                    speakUp("DarkMode implement");
+                    setTimeout(() => (document.body.className = "darkMode"), 300);
+
+                } else if (text.toLowerCase().includes(`${input.value} clear commands`)) {
+                    speakUp("Your will is my command");
+                    command.value = "";
+                } else if (text.toLowerCase().includes(`${input.value} clear data`)) {
+                    speakUp("ok NOt a problem");
+                    content.value = "";
+                } else {
+                    speakUp(text);
+                    if (text != greet)
+                        content.value += `${text}
+    `;
+                }
+            };
+        }
+
+        // document.onload = actions();
+        // input.addEventListener("input", actions);
+        btn.addEventListener("click", () => {
+            recognition.start();
+        });
+
+        //this line in function doesn't let voice change
+        var synth = window.speechSynthesis;
+
+        function speakUp(msg) {
+            var voices = synth.getVoices();
+            const speech = new SpeechSynthesisUtterance();
+            speech.text = msg;
+            speech.volume = 1;
+            speech.rate = 0.9;
+            speech.pitch = 1;
+            speech.voice = voices[1];
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+</body>
+
+</html>
