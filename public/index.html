@@ -8,18 +8,20 @@
     <title>Document</title>
 </head>
 
-<body class="darkMode">
+<body class="lightMode">
     <nav>
         <ul>
-            <li>Text-to-Speech</li>
+            <li class="logo">Text-to-Speech</li>
             <li><a href="#form">Upload File</a></li>
         </ul>
     </nav>
     <section class="first">
         <div class="wrapName">
-            <h3>What do you wanna call your Voice artist? By default it's GO</h3>
-            <input type="text" value="go" class="nameOfVoice">
-            <button class="submitName">CLICK</button>
+            <h3>Your voice artist name</h3>
+            <div class="row">
+                <input type="text" value="go" class="nameOfVoice">
+                <button class="submitName">CLICK</button>
+            </div>
         </div>
         <button class="talk">TALK</button>
         <div class="commandSection textarea">
@@ -27,311 +29,358 @@
                 id="command" class="command"></textarea>
         </div>
         <div class="txt textarea">
-            <label for="txt"> TEXT-TO-SPEECH</label>
+            <label for="txt"> Speech-to-Text</label>
             <textarea id="txt" placeholder="spoken words goes here..." class="content"></textarea>
         </div>
     </section>
 
-    <form id="form" action="/extract-text" method="post">
+    <div id="form">
         <textarea class="pdfText"></textarea>
         <input type="file" class="inpFile">
-        <button class="btnUpload">Upload</button>
-        <button class="sayPdf">Listen</button>
-    </form>
+        <button class="btnUpload">Submit</button>
+        <div class="row">
+            <button class="sayPdf">play</button>
+            <button class="pause">Pause</button>
+            <button class="stop">Stop</button>
+            speed<input value="1" type="number" class="speed" min="0.5" max="3" step="0.25">
+        </div>
+        </form>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            z-index: 1;
-
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            height: 200vh;
-            font-family: sans-serif;
-            transform-style: preserve-3d;
-            overflow-x: hidden;
-
-            transition: all 0.3s linear;
-        }
-
-        nav {
-            position: fixed;
-
-            width: 100vw;
-            background-color: darkcyan;
-        }
-
-        nav ul {
-            display: flex;
-            /* height: 5vh; */
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        ul li {
-            list-style-type: none;
-            padding: 15px 0;
-            margin: 0 5vw;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: burlywood;
-        }
-
-        .textarea {
-            flex-direction: column;
-            display: flex;
-            align-items: center;
-        }
-
-        section {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
-            overflow-x: hidden;
-            /* border: 1px solid black; */
-        }
-
-        section::before {
-            content: 'R';
-            font-size: 40vw;
-            position: absolute;
-            color: rgb(255, 255, 255);
-            text-align: center;
-            /* transform: rotate(90deg); */
-            max-height: 100vh;
-            min-width: 100vw;
-            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-            top: 10vh;
-            right: 0;
-            transform-style: preserve-3d;
-            perspective: 800px;
-            text-shadow: 4px 4px 12px #29ff33, 8px 8px 24px rgb(41, 255, 51);
-            z-index: -1;
-            animation: rotation 4s linear forwards;
-            /* animation:  2s ease infinite; */
-            /* animation-delay: 5s; */
-
-        }
-
-        @keyframes rotation {
-            0% {
-                /* transform: scale(0); */
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                z-index: 1;
+                box-sizing: border-box;
             }
 
-            50% {
-                transform: rotatey(360deg);
-                font-size: 30vw;
-                top: 20vh;
-                left: -20vw;
-                text-shadow: 4px 4px 32px #29ff33, 8px 8px 44px rgb(41, 255, 51);
-
+            html {
+                scroll-behavior: smooth;
             }
 
-            100% {
-                font-size: 15vw;
-                top: 30vh;
-                left: -50vw;
-                /* transform: translateX(-30vw) translateY(-20vh); */
-                text-shadow: 4px 4px 22px #29ff33, 8px 8px 34px rgb(41, 255, 51);
-
-
+            body {
+                height: 200vh;
+                font-family: sans-serif;
+                transform-style: preserve-3d;
+                overflow-x: hidden;
+                transition: all 0.3s linear;
             }
 
-        }
+            nav {
+                position: fixed;
+                width: 100vw;
+                background-color: rgb(0, 0, 0);
+                box-shadow: 0 0 5px beige;
+            }
 
+            .logo {
+                font-size: 2rem;
+                text-shadow: 0 0 3px black;
+            }
 
+            nav ul {
+                display: flex;
+                /* height: 5vh; */
+                justify-content: space-between;
+                align-items: center;
+            }
 
+            ul li {
+                list-style-type: none;
+                padding: 15px 0;
+                margin: 0 5vw;
+            }
 
+            nav a {
+                text-decoration: none;
+                color: rgb(209, 208, 207);
+            }
 
-        form {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
-            background-color: darkcyan;
-            position: relative;
-        }
+            .textarea {
+                flex-direction: column;
+                display: flex;
+                align-items: center;
+            }
 
+            section {
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+                flex-direction: column;
+                height: 100vh;
+                overflow-x: hidden;
+                /* border: 1px solid black; */
+            }
 
+            section::before {
+                content: 'R';
+                font-size: 40vw;
+                position: absolute;
+                color: rgb(255, 255, 255);
+                text-align: center;
+                /* transform: rotate(90deg); */
+                max-height: 100vh;
+                min-width: 100vw;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+                top: 10vh;
+                right: 0;
+                transform-style: preserve-3d;
+                perspective: 800px;
+                text-shadow: 4px 4px 12px black, 8px 8px 24px rgb(41, 255, 51);
+                z-index: -1;
+                animation: rotation 4s linear forwards;
+                /* animation:  2s ease infinite; */
+                /* animation-delay: 5s; */
+            }
 
-
-        .darkMode {
-            background-color: rgb(43, 42, 42);
-            color: rgb(161, 161, 161);
-            border-color: white;
-            text-shadow: 1px 1px white;
-        }
-
-        .lightMode {
-            background-color: rgb(211, 203, 203);
-            color: rgb(85, 71, 71);
-        }
-
-        .wrapName {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            border: 1px solid black;
-            box-shadow: 4px 4px 12px rgb(41, 255, 51), 8px 8px 24px rgb(41, 255, 51);
-
-            padding: 20px;
-            align-items: center;
-        }
-
-
-
-        button {
-            width: 80px;
-            padding: 4px 0;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        input {
-            margin: 2vh 0;
-            transition: all 0.3s linear;
-        }
-
-        .vanish {
-            display: none;
-        }
-
-        .command {
-            font-family: monospace;
-            position: relative;
-        }
-
-        label {
-            margin: 5px 0;
-        }
-
-        .content {
-            width: 70vw;
-            height: 20vh;
-        }
-
-        .pdfText {
-            width: 70vw;
-            height: 50vh;
-        }
-    </style>
-
-
-    <script>
-        let btn = document.querySelector(".talk");
-        let command = document.querySelector(".command");
-        let content = document.querySelector(".content");
-        let nameBtn = document.querySelector(".submitName");
-        let input = document.querySelector(".nameOfVoice");
-        let namePart = document.querySelector(".wrapName");
-
-        let btnUpload = document.querySelector(".btnUpload");
-        let inpFile = document.querySelector(".inpFile");
-        let pdfText = document.querySelector(".pdfText");
-        let sayPdf = document.querySelector(".sayPdf");
-
-
-        btnUpload.addEventListener('click', (e) => {
-            e.preventDefault()
-            //built-in object to send files with key value pairs to the server
-            const formData = new FormData()
-            formData.append('pdfFile', inpFile.files[0])
-            fetch('/extract-text', {
-                method: 'post',
-                body: formData
-            }).then(res => {
-                return res.text()
-            }).then(data => {
-                pdfText.value = data
-            })
-        })
-        sayPdf.addEventListener('click', () => {
-            speakUp(pdfText.value)
-        })
-
-
-
-
-        nameBtn.addEventListener("click", actions);
-        // input.addEventListener("input", (e) => console.log(e.target.value));
-
-        let SpeechRecognition =
-            window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recognition = new SpeechRecognition();
-
-        recognition.onstart = () => console.log("talk");
-
-        // recognition.continuous = false;
-        let greet = ['night', 'light', 'clear data']
-
-        function actions() {
-            namePart.classList.toggle("vanish");
-            console.log(input.value);
-            recognition.onresult = (event) => {
-                let text = event.results[0][0].transcript;
-
-                //* For keeping history of commands
-                for (let i = 0; i < greet.length; i++) {
-                    if (text.toLowerCase().includes(`${input.value} ${greet[i]}`)) {
-                        command.value += `${input.value} ${greet[i]}\n`
-                    }
+            @keyframes rotation {
+                0% {
+                    /* transform: scale(0); */
                 }
 
+                50% {
+                    transform: rotatey(360deg);
+                    font-size: 30vw;
+                    top: 20vh;
+                    left: -20vw;
+                    text-shadow: 4px 4px 32px #00C9C8, 8px 8px 44px #00C9C8;
+                }
 
-                if (text.toLowerCase().includes(`${input.value} light`)) {
-                    speakUp("lightMode implement");
-                    setTimeout(() => (document.body.className = "lightMode"), 300);
-                } else if (text.toLowerCase().includes(`${input.value} night`)) {
-                    speakUp("DarkMode implement");
-                    setTimeout(() => (document.body.className = "darkMode"), 300);
+                100% {
+                    font-size: 15vw;
+                    top: 30vh;
+                    left: -50vw;
+                    /* transform: translateX(-30vw) translateY(-20vh); */
+                    text-shadow: 4px 4px 22px #00C9C8, 8px 8px 34px #00C9C8;
+                }
+            }
 
-                } else if (text.toLowerCase().includes(`${input.value} clear commands`)) {
-                    speakUp("Your will is my command");
-                    command.value = "";
-                } else if (text.toLowerCase().includes(`${input.value} clear data`)) {
-                    speakUp("ok NOt a problem");
-                    content.value = "";
+            #form {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                height: 100vh;
+                /* color: #00C9C8; */
+                text-shadow: 0 0 2px black;
+                /* background-image: linear-gradient(to left top, #7498cf, #b28bcd, #e67da8, #f6806f, #da993a); */
+                position: relative;
+            }
+
+            #form button {
+                background-color: #c699ed;
+                /* color: #00C9C8; */
+                /* text-shadow: 0 0 1px black; */
+            }
+
+
+
+
+            .wrapName {
+                display: flex;
+                justify-content: center;
+                font-size: 12px;
+                /* font-size: clamp(10px, 10px, 20rem); */
+                flex-direction: column;
+                border: 1px solid black;
+                border-radius: 20px;
+                background: rgba(0, 0, 0, 0.747);
+                box-shadow: 4px 4px 12px #00edae, 8px 8px 24px #00edae;
+                padding: 8px 40px;
+                align-items: center;
+            }
+
+            button {
+                width: 80px;
+                padding: 4px 0;
+                background-color: #00C9C8;
+                font-weight: bold;
+                cursor: pointer;
+                /* border-radius: 8px; */
+            }
+
+            input {
+                margin: 2vh 0;
+                padding: 4px 2px;
+                border-radius: 10px;
+                outline: none;
+                transition: all 0.3s linear;
+            }
+
+            .vanish {
+                display: none;
+            }
+
+            .command {
+                font-family: monospace;
+                position: relative;
+            }
+
+            label {
+                margin: 5px 0;
+            }
+
+            .content {
+                width: 70vw;
+                height: 20vh;
+            }
+
+            .pdfText {
+                width: 70vw;
+                height: 50vh;
+            }
+
+            .darkMode {
+                background-image: radial-gradient(circle, #707074, #545356, #393839, #201f1f, #000000);
+                color: #FFE3F1;
+                border-color: white;
+                /* clip-path: circle(3.9% at 66% 80%); */
+
+                text-shadow: 1px 1px 3px rgba(82, 82, 82, 0.527);
+            }
+
+            .lightMode {
+                background-image: linear-gradient(to right bottom, #ffe3f3, #f4c8ec, #e2afeb, #c699ed, #9d87f2, #7c93fb, #539eff, #00a7ff, #00c4ff, #00dce7, #00edae, #82f669);
+                color: rgb(223, 223, 223);
+
+                font-weight: bolder;
+                text-shadow: 0 0 3px rgb(0, 0, 0);
+            }
+        </style>
+
+
+        <script>
+            let talkBtn = document.querySelector(".talk");
+            let command = document.querySelector(".command");
+            let content = document.querySelector(".content");
+            let nameBtn = document.querySelector(".submitName");
+            let input = document.querySelector(".nameOfVoice");
+            let namePart = document.querySelector(".wrapName");
+            let pauseBtn = document.querySelector(".pause");
+            let stopBtn = document.querySelector(".stop");
+            let speedBtn = document.querySelector('.speed')
+            let btnUpload = document.querySelector(".btnUpload");
+            let inpFile = document.querySelector(".inpFile");
+            let pdfText = document.querySelector(".pdfText");
+            let sayPdf = document.querySelector(".sayPdf");
+
+
+            btnUpload.addEventListener('click', () => {
+                //built-in object to send files with key value pairs to the server
+                const formData = new FormData()
+                formData.append('pdfFile', inpFile.files[0])
+                if (inpFile.files[0]) {
+                    fetch('/extract-text', {
+                        method: 'post',
+                        body: formData
+                    }).then(res => {
+                        return res.text()
+                    }).then(data => {
+                        pdfText.value = data
+                    })
                 } else {
-                    speakUp(text);
-                    if (text != greet)
-                        content.value += `${text}
-    `;
+                    alert('select any text file')
                 }
-            };
-        }
+            })
+            sayPdf.addEventListener('click', () => {
+                if (pdfText.value) speakUp(pdfText.value)
+                // console.log(pdfText.value);
+            })
 
-        // document.onload = actions();
-        // input.addEventListener("input", actions);
-        btn.addEventListener("click", () => {
-            recognition.start();
-        });
+            nameBtn.addEventListener("click", actions);
 
-        //this line in function doesn't let voice change
-        var synth = window.speechSynthesis;
+            let SpeechRecognition =
+                window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
 
-        function speakUp(msg) {
-            var voices = synth.getVoices();
+            recognition.onstart = () => console.log("talk");
+
+            // recognition.continuous = false;
+            let greet = ['night', 'light', 'clear data']
+
+            function actions() {
+                namePart.classList.toggle("vanish");
+                console.log(input.value);
+                recognition.onresult = (event) => {
+                    let text = event.results[0][0].transcript;
+
+                    //* For keeping history of commands
+                    for (let i = 0; i < greet.length; i++) {
+                        if (text.toLowerCase().includes(`${input.value} ${greet[i]}`)) {
+                            command.value += `${input.value} ${greet[i]}\n`
+                        }
+                    }
+
+
+                    if (text.toLowerCase().includes(`${input.value} light`)) {
+                        speakUp("lightMode implement");
+                        setTimeout(() => (document.body.className = "lightMode"), 300);
+                    } else if (text.toLowerCase().includes(`${input.value} night`)) {
+                        speakUp("DarkMode implement");
+                        setTimeout(() => (document.body.className = "darkMode"), 300);
+
+                    } else if (text.toLowerCase().includes(`${input.value} clear commands`)) {
+                        speakUp("Your will is my command");
+                        command.value = "";
+                    } else if (text.toLowerCase().includes(`${input.value} clear data`)) {
+                        speakUp("ok NOt a problem");
+                        content.value = "";
+                    } else {
+                        speakUp(text);
+                        if (text != greet)
+                            content.value += `${text}
+    `;
+                    }
+                };
+            }
+
+            // document.onload = actions();
+            // input.addEventListener("input", actions);
+            talkBtn.addEventListener("click", () => {
+                recognition.start();
+            });
+
+            //this line in function doesn't let voice change
+            var synth = window.speechSynthesis;
+
+            speedBtn.addEventListener('input', () => {
+                stop()
+                speakUp(speech.text.substring(currIndex))
+            })
+
             const speech = new SpeechSynthesisUtterance();
-            speech.text = msg;
-            speech.volume = 1;
-            speech.rate = 0.9;
-            speech.pitch = 1;
-            speech.voice = voices[1];
-            window.speechSynthesis.speak(speech);
-        }
-    </script>
+            speech.addEventListener('end', () => {
+                pdfText.disabled = false
+            })
+
+            speech.addEventListener('boundary', e => {
+                currIndex = e.charIndex
+            })
+            let currIndex;
+
+            function speakUp(msg) {
+                if (speechSynthesis.paused && speechSynthesis.speaking) {
+                    return speechSynthesis.resume()
+                }
+                var voices = synth.getVoices();
+                speech.text = msg;
+                pdfText.disabled = true
+                speech.volume = 1;
+                speech.rate = speedBtn.value || 0.5;
+                speech.pitch = 1;
+                speech.voice = voices[1];
+                window.speechSynthesis.speak(speech);
+            }
+            pauseBtn.addEventListener('click', () => {
+                if (speechSynthesis.speaking) speechSynthesis.pause()
+            })
+            stopBtn.addEventListener('click', stop)
+
+            function stop() {
+                speechSynthesis.resume()
+                speechSynthesis.cancel()
+            }
+        </script>
 </body>
 
 </html>
